@@ -1,5 +1,4 @@
 from pygame import *
-from initial_setting import *
 
 
 init()
@@ -22,6 +21,8 @@ class Hero:
         self.jump = False
         self.j_count = 10
         self.rect = Rect(self.x, self.y, self.width, self.height)
+        self.heart = transform.scale(image.load(r'C:\Users\028\Downloads\game\sprites\heart.png').convert_alpha(), (25, 25))
+        self.hp = 5
 
     
     def touch_area(self):
@@ -29,14 +30,22 @@ class Hero:
     
     def draw(self):
         window.blit(self.image, (self.x, self.y))
+        for i in range(self.hp):
+            window.blit(self.heart, (100 + i*50, 50))
         self.rect.x = self.x
         self.rect.y = self.y
     
     def logic(self):
         for enemy in small_enemy_list:
-            if enemy.rect.colliderect(self.rect):
+            if self.rect.colliderect(enemy.rect):
                 small_enemy_list.remove(enemy)
+                self.hp -= 1
+            
 
+
+
+                
+hero = Hero(48, 48, 15, 200, 10)
 
 
 
@@ -72,5 +81,5 @@ class Enemy:
         self.touch_area()
 
 
-hero = Hero(48, 48, 15, 200, 10)
+
 small_enemy_list = []
